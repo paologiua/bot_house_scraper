@@ -71,10 +71,10 @@ def date_to_string(date):
 def get_text_el(el):
     return el.text if el else "None"
 
-def array_dif(arr1, arr2):
-    diff = list(set(arr1) - set(arr2))
+def dict_dif(dict1, dict2):
+    diff = list(set(dict1) - set(dict2))
 
-    return {key: value for key, value in arr1.items() if key in diff}
+    return {key: value for key, value in dict1.items() if key in diff}
 
 def get_translate_url(url):
     import urllib.parse
@@ -123,8 +123,8 @@ while(True):
 
     print(datetime.now().strftime("%d-%m-%Y_%H:%M:%S:"))
     
-    new_houses = array_dif(new_data, old_data)
-    print(json.dumps(array_dif(new_data, old_data),indent=4) + "\n")
+    new_houses = dict_dif(new_data, old_data)
+    print(json.dumps(new_houses,indent=4) + "\n")
     
     for url in list(reversed(new_houses.keys())):
         send_everyone(bot, f'''
