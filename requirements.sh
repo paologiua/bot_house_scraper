@@ -4,4 +4,3 @@ sudo apt-get install chromium-driver
 
 pip install pyTelegramBotAPI
 pip install selenium
-pip install pytz
