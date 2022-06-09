@@ -323,10 +323,17 @@ else:
         page = get_anticaptcha_page(URLS['idealista'])
 
         rooms = page.select(".item-multimedia-container:not(.item_contains_branding)")
+
+        last_check = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)['idealista']['last_check']
         for room in rooms:
             link = room.find("a", {"class": "item-link"})
 
             room_url = "https://www.idealista.it%s" % urllib.parse.urlparse(link["href"]).path
+
+            if(room_url in last_check):
+                rooms_data[room_url] = last_check[room_url]
+                continue
+
             room_name = get_text_el(link)
 
             room_price = get_text_el(room.find("span", {"class": "item-price"}))
@@ -344,7 +351,7 @@ else:
         now_time = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
         print("[%s]:" % now_time)
         
-        new_houses = dict_dif(rooms_data, load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)['idealista']['last_check'])
+        new_houses = dict_dif(rooms_data, last_check)
         print(json.dumps(new_houses,indent = 4) + "\n")
 
         status_dict = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)
@@ -366,8 +373,15 @@ else:
         both_sexes_rooms = list(filter(lambda x: not x.select(".PostingTimeAndPlace-module_vetrina-badge__XWWCm"), page.select(".BigCard-module_link__kVqPE")))
 
         rooms = both_sexes_rooms + man_rooms
+
+        last_check = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)['subito']['last_check']
         for room in rooms:
             room_url = "https://www.subito.it%s" % urllib.parse.urlparse(room["href"]).path
+
+            if(room_url in last_check):
+                rooms_data[room_url] = last_check[room_url]
+                continue
+
             room_name = get_text_el(room.find("h2", {"class": "BigCard-module_card-title__Cgcnt"}))
 
             room_price = get_text_el(room.find("p", {"class": "price"}))
@@ -386,7 +400,7 @@ else:
         now_time = datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
         print("[%s]:" % now_time)
         
-        new_houses = dict_dif(rooms_data, load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)['subito']['last_check'])
+        new_houses = dict_dif(rooms_data, last_check)
         print(json.dumps(new_houses,indent = 4) + "\n")
 
         status_dict = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)
@@ -456,7 +470,6 @@ else:
         for url in list(reversed(new_houses.keys())):
             send_everyone(bot, room_to_str(new_houses, url))
 
-    get_rooms_from_immobiliare()
     while(True):
         get_rooms_from_idealista()
         time.sleep((8 + random.randint(-3, 3)) * 60)
