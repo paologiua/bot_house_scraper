@@ -260,7 +260,7 @@ else:
             div = cv2.divide(gray, thresh, scale=192)  # added
 
             data = pytesseract.image_to_string(div, config='--psm 11 digits')
-            return data.strip()
+            return "".join(filter(lambda x: x.isdigit() or x == '+', data.strip()))
         except:
             return "None"
 
@@ -421,6 +421,7 @@ else:
             room_url = link["href"]
             
             if(room_url in last_check):
+                rooms_data[room_url] = last_check[room_url]
                 continue
 
             room_name = get_text_el(link)
@@ -455,6 +456,7 @@ else:
         for url in list(reversed(new_houses.keys())):
             send_everyone(bot, room_to_str(new_houses, url))
 
+    get_rooms_from_immobiliare()
     while(True):
         get_rooms_from_idealista()
         time.sleep((8 + random.randint(-3, 3)) * 60)
