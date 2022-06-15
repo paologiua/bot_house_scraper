@@ -143,9 +143,16 @@ else:
 
         #Open Browser
         driver = webdriver.Chrome('chromedriver', options=options)
-
-        driver.get(url)
-        content = (WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.TAG_NAME, "html"))).get_attribute('outerHTML'))
+        
+        content = False
+        while(not content):
+            try:
+                driver.get(url)
+                content = (WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.TAG_NAME, "html"))).get_attribute('outerHTML'))
+            except:
+                print("Error while getting the page, retry in 30 seconds ...")
+                time.sleep(30)
+                
         driver.close()
         return BeautifulSoup(content, "html.parser")
 
