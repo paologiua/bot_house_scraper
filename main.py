@@ -292,7 +292,8 @@ else:
             info.append("None")
 
         try:
-            date = list(filter(lambda x: "riferimento e Data annuncio" in x.text, room_page.select(".im-features__list")))[0].select(".im-features__value")[0].text.split(" - ")[1].strip()
+            room_id = "".join(filter(lambda x: x.isdigit(), urllib.parse.urlparse(url).path))
+            date = list(filter(lambda x: room_id in x.text, room_page.select(".im-features__list")))[0].select(".im-features__value")[0].text.split(" - ")[1].strip()
             info.append(date)
         except:
             info.append("None")
