@@ -163,7 +163,7 @@ else:
         path = urlparsed.path
         query = urlparsed.query
 
-        return "https://" + netloc.replace(".", "-") + ".translate.goog" + path + "?" + query + "&_x_tr_sl=it&_x_tr_tl=it&_x_tr_hl=it&_x_tr_pto=op,wapp"
+        return "https://" + netloc.replace(".", "-") + ".translate.goog" + path + "?" + query + "&_x_tr_sl=it&_x_tr_tl=en&_x_tr_hl=it&_x_tr_pto=op,wapp"
 
     def get_anticaptcha_page(url):
         return get_page(get_anticaptcha_url(url))
@@ -329,7 +329,7 @@ else:
         rooms_data = {}
 
         page = get_anticaptcha_page(URLS['idealista'])
-
+        
         rooms = page.select(".item-multimedia-container:not(.item_contains_branding)")
 
         last_check = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)['idealista']['last_check']
@@ -360,7 +360,7 @@ else:
         print("[%s]:" % now_time)
         
         new_houses = dict_dif(rooms_data, last_check)
-        print(json.dumps(new_houses,indent = 4) + "\n")
+        print(json.dumps(new_houses, indent = 4) + "\n")
 
         status_dict = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)
         status_dict['idealista']['last_check'] = rooms_data
@@ -409,7 +409,7 @@ else:
         print("[%s]:" % now_time)
         
         new_houses = dict_dif(rooms_data, last_check)
-        print(json.dumps(new_houses,indent = 4) + "\n")
+        print(json.dumps(new_houses, indent = 4) + "\n")
 
         status_dict = load_json_from_file('status.json', STATUS_DEFAULT_FORMAT)
         status_dict['subito']['last_check'] = rooms_data
