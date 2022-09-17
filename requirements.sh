@@ -1,5 +1,10 @@
 #!/bin/bash
 
+sudo apt-get remove chromium-browser
+sudo apt-get remove chromium
+sudo apt-get autoremove
+sudo apt-get clean
+
 sudo apt-get install chromium-driver
 sudo apt-get install tesseract-ocr
 
